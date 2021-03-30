@@ -18,8 +18,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-# flake8: noqa
-from kumo_json.json_to_msg import dict_to_msg, json_to_msg
+import json
+from rclpy.node import MsgType
 
-# flake8: noqa
-from kumo_json.msg_to_json import msg_to_dict, msg_to_json
+
+def msg_to_dict(msg: MsgType) -> dict:
+    fields = msg.get_fields_and_field_types()
+
+    msg_dict = {}
+    for field in fields:
+        if hasattr(msg, field):
+            msg_dict[field] = getattr(msg, field)
+
+    return msg_dict
+
+
+def msg_to_json(msg: MsgType) -> str:
+    msg_dict = msg_to_dict(msg)
+
+    return json.dumps(msg_dict)

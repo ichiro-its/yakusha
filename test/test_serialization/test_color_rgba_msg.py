@@ -18,8 +18,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from kumo_json import msg_to_json, json_to_msg
 from std_msgs.msg import ColorRGBA
+
+from kumo_json import msg_to_json, json_to_msg
 
 
 def test_color_rgba_msg():
@@ -38,12 +39,12 @@ def test_color_rgba_msg():
     assert parsed_msg.a == msg.a
 
 
-def test_color_rgba_msg_from_json():
+def test_color_rgba_msg_from_json_with_integer():
     msg_json = '''{
-                    "r": 0.0,
-                    "g": 64.0,
+                    "r": -0.0,
+                    "g": 64,
                     "b": 128.0,
-                    "a": 255.0
+                    "a": 255
                   }'''
 
     parsed_msg = json_to_msg(msg_json, ColorRGBA())

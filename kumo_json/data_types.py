@@ -18,23 +18,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from std_msgs.msg import Int32
 
-from kumo_json import msg_to_json, json_to_msg
+def data_type_is_float(data_type: str) -> bool:
+    if data_type in ['float', 'double']:
+        return True
 
-
-def test_int32_msg():
-    msg = Int32()
-    msg.data = 2021
-
-    parsed_msg = json_to_msg(msg_to_json(msg), Int32())
-
-    assert parsed_msg.data == msg.data
-
-
-def test_int32_msg_from_json():
-    msg_json = '{ "data": 2021 }'
-
-    parsed_msg = json_to_msg(msg_json, Int32())
-
-    assert parsed_msg.data == 2021
+    return False

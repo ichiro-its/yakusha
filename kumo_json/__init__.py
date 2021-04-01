@@ -19,6 +19,9 @@
 # THE SOFTWARE.
 
 # flake8: noqa
+from kumo_json.data_types import data_type_is_float
+
+# flake8: noqa
 from kumo_json.json_to_msg import dict_to_msg, json_to_msg
 
 # flake8: noqa

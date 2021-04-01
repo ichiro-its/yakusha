@@ -32,12 +32,29 @@ def test_float32_msg():
     assert parsed_msg.data == msg.data
 
 
+def test_float32_msg_negative():
+    msg = Float32()
+    msg.data = -3.14
+
+    parsed_msg = json_to_msg(msg_to_json(msg), Float32())
+
+    assert parsed_msg.data == msg.data
+
+
 def test_float32_msg_from_json():
     msg_json = '{ "data": 3.14 }'
 
     parsed_msg = json_to_msg(msg_json, Float32())
 
     assert parsed_msg.data == 3.14
+
+
+def test_float32_msg_from_json_negative():
+    msg_json = '{ "data": -3.14 }'
+
+    parsed_msg = json_to_msg(msg_json, Float32())
+
+    assert parsed_msg.data == -3.14
 
 
 def test_float32_msg_from_json_integer():

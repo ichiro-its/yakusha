@@ -18,11 +18,31 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+from std_msgs.msg import UInt32
 
-def data_type_is_integer(data_type: str) -> bool:
-    return data_type in ['int8', 'int16', 'int32', 'int64',
-                         'uint8', 'uint16', 'uint32', 'uint64']
+from kumo_json import msg_to_json, json_to_msg
 
 
-def data_type_is_float(data_type: str) -> bool:
-    return data_type in ['float', 'double']
+def test_uint32_msg():
+    msg = UInt32()
+    msg.data = 50
+
+    parsed_msg = json_to_msg(msg_to_json(msg), UInt32())
+
+    assert parsed_msg.data == msg.data
+
+
+def test_uint32_msg_from_json():
+    msg_json = '{ "data": 50 }'
+
+    parsed_msg = json_to_msg(msg_json, UInt32())
+
+    assert parsed_msg.data == 50
+
+
+def test_uint32_msg_from_json_float():
+    msg_json = '{ "data": 3.14 }'
+
+    parsed_msg = json_to_msg(msg_json, UInt32())
+
+    assert parsed_msg.data == 3

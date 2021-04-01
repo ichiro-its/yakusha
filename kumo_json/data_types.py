@@ -19,8 +19,9 @@
 # THE SOFTWARE.
 
 
-def data_type_is_float(data_type: str) -> bool:
-    if data_type in ['float', 'double']:
-        return True
+def data_type_is_integer(data_type: str) -> bool:
+    return data_type in ['int8', 'int16', 'int32', 'int64']
 
-    return False
+
+def data_type_is_float(data_type: str) -> bool:
+    return data_type in ['float', 'double']

@@ -21,14 +21,25 @@
 import json
 from rclpy.node import MsgType
 
+from kumo_json.data_types import data_type_is_float, data_type_is_integer
+
 
 def msg_to_dict(msg: MsgType) -> dict:
     fields = msg.get_fields_and_field_types()
 
     msg_dict = {}
-    for field in fields:
-        if hasattr(msg, field):
-            msg_dict[field] = getattr(msg, field)
+    for field, data_type in fields.items():
+        if not hasattr(msg, field):
+            continue
+
+        value = getattr(msg, field)
+
+        if data_type_is_float(data_type):
+            value = float(value)
+        elif data_type_is_integer(data_type):
+            value = int(value)
+
+        msg_dict[field] = value
 
     return msg_dict
 

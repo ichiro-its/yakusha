@@ -18,13 +18,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from kumo_json import msg_to_json, json_to_msg
 from std_msgs.msg import Int32
+
+from kumo_json import msg_to_json, json_to_msg
 
 
 def test_int32_msg():
     msg = Int32()
-    msg.data = 2021
+    msg.data = 50
+
+    parsed_msg = json_to_msg(msg_to_json(msg), Int32())
+
+    assert parsed_msg.data == msg.data
+
+
+def test_int32_msg_negative():
+    msg = Int32()
+    msg.data = -50
 
     parsed_msg = json_to_msg(msg_to_json(msg), Int32())
 
@@ -32,8 +42,24 @@ def test_int32_msg():
 
 
 def test_int32_msg_from_json():
-    msg_json = '{ "data": 2021 }'
+    msg_json = '{ "data": 50 }'
 
     parsed_msg = json_to_msg(msg_json, Int32())
 
-    assert parsed_msg.data == 2021
+    assert parsed_msg.data == 50
+
+
+def test_int32_msg_from_json_negative():
+    msg_json = '{ "data": -50 }'
+
+    parsed_msg = json_to_msg(msg_json, Int32())
+
+    assert parsed_msg.data == -50
+
+
+def test_int32_msg_from_json_float():
+    msg_json = '{ "data": 3.14 }'
+
+    parsed_msg = json_to_msg(msg_json, Int32())
+
+    assert parsed_msg.data == 3

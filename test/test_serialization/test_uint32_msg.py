@@ -18,11 +18,31 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-# flake8: noqa
-from kumo_json.data_types import data_type_is_float, data_type_is_integer
+from std_msgs.msg import UInt32
 
-# flake8: noqa
-from kumo_json.json_to_msg import dict_to_msg, json_to_msg
+from kumo_json import msg_to_json, json_to_msg
 
-# flake8: noqa
-from kumo_json.msg_to_json import msg_to_dict, msg_to_json
+
+def test_uint32_msg():
+    msg = UInt32()
+    msg.data = 50
+
+    parsed_msg = json_to_msg(msg_to_json(msg), UInt32())
+
+    assert parsed_msg.data == msg.data
+
+
+def test_uint32_msg_from_json():
+    msg_json = '{ "data": 50 }'
+
+    parsed_msg = json_to_msg(msg_json, UInt32())
+
+    assert parsed_msg.data == 50
+
+
+def test_uint32_msg_from_json_float():
+    msg_json = '{ "data": 3.14 }'
+
+    parsed_msg = json_to_msg(msg_json, UInt32())
+
+    assert parsed_msg.data == 3

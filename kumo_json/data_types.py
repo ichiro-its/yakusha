@@ -18,11 +18,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-# flake8: noqa
-from kumo_json.data_types import data_type_is_float, data_type_is_integer
 
-# flake8: noqa
-from kumo_json.json_to_msg import dict_to_msg, json_to_msg
+def data_type_is_integer(data_type: str) -> bool:
+    return data_type in ['int8', 'int16', 'int32', 'int64',
+                         'uint8', 'uint16', 'uint32', 'uint64']
 
-# flake8: noqa
-from kumo_json.msg_to_json import msg_to_dict, msg_to_json
+
+def data_type_is_float(data_type: str) -> bool:
+    return data_type in ['float', 'double']

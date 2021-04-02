@@ -18,13 +18,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from kumo_json import msg_to_json, json_to_msg
 from std_msgs.msg import Float32
+
+from kumo_json import msg_to_json, json_to_msg
 
 
 def test_float32_msg():
     msg = Float32()
     msg.data = 3.14
+
+    parsed_msg = json_to_msg(msg_to_json(msg), Float32())
+
+    assert parsed_msg.data == msg.data
+
+
+def test_float32_msg_negative():
+    msg = Float32()
+    msg.data = -3.14
 
     parsed_msg = json_to_msg(msg_to_json(msg), Float32())
 
@@ -37,3 +47,19 @@ def test_float32_msg_from_json():
     parsed_msg = json_to_msg(msg_json, Float32())
 
     assert parsed_msg.data == 3.14
+
+
+def test_float32_msg_from_json_negative():
+    msg_json = '{ "data": -3.14 }'
+
+    parsed_msg = json_to_msg(msg_json, Float32())
+
+    assert parsed_msg.data == -3.14
+
+
+def test_float32_msg_from_json_integer():
+    msg_json = '{ "data": 50 }'
+
+    parsed_msg = json_to_msg(msg_json, Float32())
+
+    assert parsed_msg.data == 50.0

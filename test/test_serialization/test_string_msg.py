@@ -18,8 +18,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from kumo_json import msg_to_json, json_to_msg
 from std_msgs.msg import String
+
+from kumo_json import msg_to_json, json_to_msg
 
 
 def test_string_msg():

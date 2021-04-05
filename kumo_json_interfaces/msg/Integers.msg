@@ -1,0 +1,4 @@
+int8 int8
+int16 int16
+int32 int32
+int64 int64

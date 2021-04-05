@@ -25,6 +25,7 @@ from kumo_json import msg_to_json, json_to_msg
 
 def test_integers_msg():
     msg = Integers()
+
     msg.int8 = 100
     msg.int16 = 10000
     msg.int32 = 1000000000
@@ -40,6 +41,7 @@ def test_integers_msg():
 
 def test_integers_msg_negative():
     msg = Integers()
+
     msg.int8 = -100
     msg.int16 = -10000
     msg.int32 = -1000000000

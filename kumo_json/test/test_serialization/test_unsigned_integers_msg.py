@@ -25,6 +25,7 @@ from kumo_json import msg_to_json, json_to_msg
 
 def test_unsigned_integers_msg():
     msg = UnsignedIntegers()
+
     msg.uint8 = 200
     msg.uint16 = 20000
     msg.uint32 = 2000000000

@@ -28,6 +28,11 @@ MAX_INT16 = (2 ** 15) - 1
 MAX_INT32 = (2 ** 31) - 1
 MAX_INT64 = (2 ** 63) - 1
 
+MAX_UINT8 = (2 ** 8) - 1
+MAX_UINT16 = (2 ** 16) - 1
+MAX_UINT32 = (2 ** 32) - 1
+MAX_UINT64 = (2 ** 64) - 1
+
 
 def clamp(value: any, min_value: any, max_value: any) -> any:
     return max(min(value, max_value), min_value)
@@ -54,6 +59,21 @@ def filter_integer(data_type: str, value: any) -> int:
 
 def is_unsigned_integer(data_type: str) -> bool:
     return data_type in ['uint8', 'uint16', 'uint32', 'uint64']
+
+
+def filter_unsigned_integer(data_type: str, value: any) -> int:
+    value = int(value)
+
+    if data_type == 'uint8':
+        value = clamp(value, 0, MAX_UINT8)
+    elif data_type == 'uint16':
+        value = clamp(value, 0, MAX_UINT16)
+    elif data_type == 'uint32':
+        value = clamp(value, 0, MAX_UINT32)
+    elif data_type == 'uint64':
+        value = clamp(value, 0, MAX_UINT64)
+
+    return value
 
 
 def is_float(data_type: str) -> bool:

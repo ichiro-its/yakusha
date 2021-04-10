@@ -36,7 +36,7 @@ def dict_to_msg(msg_dict: dict, msg: MsgType) -> MsgType:
         if dtypes.is_integer(data_type):
             value = dtypes.filter_integer(data_type, value)
         elif dtypes.is_unsigned_integer(data_type):
-            value = int(value)
+            value = dtypes.filter_unsigned_integer(data_type, value)
         elif dtypes.is_float(data_type):
             value = float(value)
 

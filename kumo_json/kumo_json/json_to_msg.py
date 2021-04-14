@@ -45,6 +45,10 @@ def dict_to_msg(msg_dict: dict, msg: MsgType) -> MsgType:
                 for index, item in enumerate(value):
                     value[index] = dtypes.filter_integer(sequence_data_type, item)
 
+            if dtypes.is_unsigned_integer(sequence_data_type):
+                for index, item in enumerate(value):
+                    value[index] = dtypes.filter_unsigned_integer(sequence_data_type, item)
+
         setattr(msg, field, value)
 
     return msg

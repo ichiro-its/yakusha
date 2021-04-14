@@ -26,12 +26,14 @@ from kumo_json import data_types as dtypes, msg_to_json, json_to_msg
 def test_array_msg():
     msg = Arrays()
     msg.int8_array = [1, 2, 3]
+    msg.uint8_array = [1, 2, 3]
     msg.bool_array = [True, False, True]
     msg.string_array = ["hello", "world", "!"]
 
     parsed_msg = json_to_msg(msg_to_json(msg), Arrays())
 
     assert parsed_msg.int8_array == msg.int8_array
+    assert parsed_msg.uint8_array == msg.uint8_array
     assert parsed_msg.bool_array == msg.bool_array
     assert parsed_msg.string_array == msg.string_array
 
@@ -39,6 +41,7 @@ def test_array_msg():
 def test_array_msg_from_json():
     msg_json = '''{
                     "int8_array": [1, 2, 3],
+                    "uint8_array": [1, 2, 3],
                     "bool_array": [true, false, true],
                     "string_array": ["hello", "world", "!"]
                   }'''
@@ -46,6 +49,7 @@ def test_array_msg_from_json():
     parsed_msg = json_to_msg(msg_json, Arrays())
 
     assert list(parsed_msg.int8_array) == [1, 2, 3]
+    assert list(parsed_msg.uint8_array) == [1, 2, 3]
     assert list(parsed_msg.bool_array) == [True, False, True]
     assert list(parsed_msg.string_array) == ["hello", "world", "!"]
 
@@ -53,6 +57,7 @@ def test_array_msg_from_json():
 def test_array_msg_from_json_overflowed_value():
     msg_json = '''{
                     "int8_array": [-200, 200],
+                    "uint8_array": [-8, 1000],
                     "bool_array": [true, false, true],
                     "string_array": ["hello", "world", "!"]
                   }'''
@@ -60,3 +65,4 @@ def test_array_msg_from_json_overflowed_value():
     parsed_msg = json_to_msg(msg_json, Arrays())
 
     assert list(parsed_msg.int8_array) == [dtypes.MIN_INT8, dtypes.MAX_INT8]
+    assert list(parsed_msg.uint8_array) == [0, dtypes.MAX_UINT8]

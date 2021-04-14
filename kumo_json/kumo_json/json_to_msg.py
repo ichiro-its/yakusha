@@ -39,6 +39,11 @@ def dict_to_msg(msg_dict: dict, msg: MsgType) -> MsgType:
             value = dtypes.filter_unsigned_integer(data_type, value)
         elif dtypes.is_float(data_type):
             value = float(value)
+        elif dtypes.is_array(data_type):
+            sequence_data_type = data_type[9:-1]
+            if dtypes.is_integer(sequence_data_type):
+                for index, item in enumerate(value):
+                    value[index] = dtypes.filter_integer(sequence_data_type, item)
 
         setattr(msg, field, value)
 

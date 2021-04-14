@@ -20,14 +20,14 @@
 
 from kumo_json_interfaces.msg import Arrays
 
-from kumo_json import msg_to_json, json_to_msg
+from kumo_json import data_types as dtypes, msg_to_json, json_to_msg
 
 
 def test_array_msg():
     msg = Arrays()
     msg.int8_array = [1, 2, 3]
     msg.bool_array = [True, False, True]
-    msg.string_array = ["satu", "dua", "tiga"]
+    msg.string_array = ["hello", "world", "!"]
 
     parsed_msg = json_to_msg(msg_to_json(msg), Arrays())
 
@@ -40,11 +40,23 @@ def test_array_msg_from_json():
     msg_json = '''{
                     "int8_array": [1, 2, 3],
                     "bool_array": [true, false, true],
-                    "string_array": ["satu", "dua", "tiga"]
+                    "string_array": ["hello", "world", "!"]
                   }'''
 
     parsed_msg = json_to_msg(msg_json, Arrays())
 
     assert list(parsed_msg.int8_array) == [1, 2, 3]
     assert list(parsed_msg.bool_array) == [True, False, True]
-    assert list(parsed_msg.string_array) == ["satu", "dua", "tiga"]
+    assert list(parsed_msg.string_array) == ["hello", "world", "!"]
+
+
+def test_array_msg_from_json_overflowed_value():
+    msg_json = '''{
+                    "int8_array": [-200, 200],
+                    "bool_array": [true, false, true],
+                    "string_array": ["hello", "world", "!"]
+                  }'''
+
+    parsed_msg = json_to_msg(msg_json, Arrays())
+
+    assert list(parsed_msg.int8_array) == [dtypes.MIN_INT8, dtypes.MAX_INT8]

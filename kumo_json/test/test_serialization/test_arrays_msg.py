@@ -32,6 +32,8 @@ def test_array_msg():
     parsed_msg = json_to_msg(msg_to_json(msg), Arrays())
 
     assert parsed_msg.int8_array == msg.int8_array
+    assert parsed_msg.bool_array == msg.bool_array
+    assert parsed_msg.string_array == msg.string_array
 
 
 def test_array_msg_from_json():
@@ -44,3 +46,5 @@ def test_array_msg_from_json():
     parsed_msg = json_to_msg(msg_json, Arrays())
 
     assert list(parsed_msg.int8_array) == [1, 2, 3]
+    assert list(parsed_msg.bool_array) == [True, False, True]
+    assert list(parsed_msg.string_array) == ["satu", "dua", "tiga"]

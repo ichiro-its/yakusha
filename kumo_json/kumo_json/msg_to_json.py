@@ -40,6 +40,8 @@ def msg_to_dict(msg: MsgType) -> dict:
             value = int(value)
         elif dtypes.is_float(data_type):
             value = float(value)
+        elif dtypes.is_array(data_type):
+            value = list(value)
 
         msg_dict[field] = value
 

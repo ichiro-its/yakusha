@@ -78,3 +78,18 @@ def filter_unsigned_integer(data_type: str, value: any) -> int:
 
 def is_float(data_type: str) -> bool:
     return data_type in ['float', 'double']
+
+
+def is_array(data_type: str) -> bool:
+    return data_type.startswith('sequence')
+
+
+def filter_type(data_type: str, value: any) -> any:
+    if is_integer(data_type):
+        value = filter_integer(data_type, value)
+    elif is_unsigned_integer(data_type):
+        value = filter_unsigned_integer(data_type, value)
+    elif is_float(data_type):
+        value = float(value)
+
+    return value

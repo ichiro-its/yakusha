@@ -27,6 +27,7 @@ def test_array_msg():
     msg = Arrays()
     msg.int8_array = [1, 2, 3]
     msg.uint8_array = [1, 2, 3]
+    msg.float32_array = [-3.1415, 3.1415]
     msg.bool_array = [True, False, True]
     msg.string_array = ["hello", "world", "!"]
 
@@ -34,6 +35,7 @@ def test_array_msg():
 
     assert parsed_msg.int8_array == msg.int8_array
     assert parsed_msg.uint8_array == msg.uint8_array
+    assert parsed_msg.float32_array == msg.float32_array
     assert parsed_msg.bool_array == msg.bool_array
     assert parsed_msg.string_array == msg.string_array
 
@@ -42,6 +44,7 @@ def test_array_msg_from_json():
     msg_json = '''{
                     "int8_array": [1, 2, 3],
                     "uint8_array": [1, 2, 3],
+                    "float32_array": [-3.1415, 3.1415],
                     "bool_array": [true, false, true],
                     "string_array": ["hello", "world", "!"]
                   }'''
@@ -50,6 +53,8 @@ def test_array_msg_from_json():
 
     assert list(parsed_msg.int8_array) == [1, 2, 3]
     assert list(parsed_msg.uint8_array) == [1, 2, 3]
+    float32_list = [round(float32, 5) for float32 in list(parsed_msg.float32_array)]
+    assert float32_list == [-3.1415, 3.1415]
     assert list(parsed_msg.bool_array) == [True, False, True]
     assert list(parsed_msg.string_array) == ["hello", "world", "!"]
 
@@ -58,6 +63,7 @@ def test_array_msg_from_json_overflowed_value():
     msg_json = '''{
                     "int8_array": [-200, 200],
                     "uint8_array": [-8, 1000],
+                    "float32_array": [-3.1415, 3.1415],
                     "bool_array": [true, false, true],
                     "string_array": ["hello", "world", "!"]
                   }'''

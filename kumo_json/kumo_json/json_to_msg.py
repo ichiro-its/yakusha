@@ -40,7 +40,7 @@ def dict_to_msg(msg_dict: dict, msg: MsgType) -> MsgType:
         elif dtypes.is_float(data_type):
             value = float(value)
         elif dtypes.is_array(data_type):
-            sequence_data_type = data_type[9:-1]
+            sequence_data_type = data_type[data_type.find('<')+1:data_type.find('>')]
             if dtypes.is_integer(sequence_data_type):
                 for index, item in enumerate(value):
                     value[index] = dtypes.filter_integer(sequence_data_type, item)
@@ -48,6 +48,10 @@ def dict_to_msg(msg_dict: dict, msg: MsgType) -> MsgType:
             if dtypes.is_unsigned_integer(sequence_data_type):
                 for index, item in enumerate(value):
                     value[index] = dtypes.filter_unsigned_integer(sequence_data_type, item)
+
+            if dtypes.is_float(sequence_data_type):
+                for index, item in enumerate(value):
+                    value[index] = float(item)
 
         setattr(msg, field, value)
 

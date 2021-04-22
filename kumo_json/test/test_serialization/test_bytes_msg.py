@@ -18,39 +18,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import json
-from rclpy.node import MsgType
+from std_msgs.msg import Byte
 
-import kumo_json.data_types as dtypes
-
-
-def msg_to_dict(msg: MsgType) -> dict:
-    fields = msg.get_fields_and_field_types()
-
-    msg_dict = {}
-    for field, data_type in fields.items():
-        if not hasattr(msg, field):
-            continue
-
-        value = getattr(msg, field)
-
-        if dtypes.is_integer(data_type):
-            value = int(value)
-        elif dtypes.is_unsigned_integer(data_type):
-            value = int(value)
-        elif dtypes.is_float(data_type):
-            value = float(value)
-        elif dtypes.is_bytes(data_type):
-            value = value.decode("utf-8")
-        elif dtypes.is_array(data_type):
-            value = list(value)
-
-        msg_dict[field] = value
-
-    return msg_dict
+from kumo_json import msg_to_json, json_to_msg
 
 
-def msg_to_json(msg: MsgType) -> str:
-    msg_dict = msg_to_dict(msg)
+def test_bool_msg():
+    msg = Byte()
+    msg.data = b'\x10'
 
-    return json.dumps(msg_dict)
+    parsed_msg = json_to_msg(msg_to_json(msg), Byte())
+
+    assert parsed_msg.data == msg.data
+
+
+def test_bool_msg_from_json():
+    msg_json = '{ "data": "\u0010" }'
+
+    parsed_msg = json_to_msg(msg_json, Byte())
+
+    assert parsed_msg.data == b'\x10'

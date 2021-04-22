@@ -46,6 +46,6 @@ def dict_to_msg(msg_dict: dict, msg: MsgType) -> MsgType:
 
 
 def json_to_msg(msg_json: str, msg: MsgType) -> MsgType:
-    msg_dict = json.loads(msg_json)
+    msg_dict = json.loads(msg_json, strict=False)
 
     return dict_to_msg(msg_dict, msg)

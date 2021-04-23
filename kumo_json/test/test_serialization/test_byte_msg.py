@@ -23,7 +23,7 @@ from std_msgs.msg import Byte
 from kumo_json import msg_to_json, json_to_msg
 
 
-def test_bool_msg():
+def test_byte_msg():
     msg = Byte()
     msg.data = b'\x10'
 
@@ -32,7 +32,7 @@ def test_bool_msg():
     assert parsed_msg.data == msg.data
 
 
-def test_bool_msg_from_json():
+def test_byte_msg_from_json():
     msg_json = '{ "data": "\u0010" }'
 
     parsed_msg = json_to_msg(msg_json, Byte())

@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Ichiro ITS
+# Copyright (c) 2021 ICHIRO ITS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -40,6 +40,8 @@ def msg_to_dict(msg: MsgType) -> dict:
             value = int(value)
         elif dtypes.is_float(data_type):
             value = float(value)
+        elif dtypes.is_bytes(data_type):
+            value = value.decode("utf-8")
         elif dtypes.is_array(data_type):
             value = list(value)
 

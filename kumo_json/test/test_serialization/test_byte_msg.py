@@ -18,23 +18,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from std_msgs.msg import Bool
+from std_msgs.msg import Byte
 
 from kumo_json import msg_to_json, json_to_msg
 
 
-def test_bool_msg():
-    msg = Bool()
-    msg.data = True
+def test_byte_msg():
+    msg = Byte()
+    msg.data = b'\x10'
 
-    parsed_msg = json_to_msg(msg_to_json(msg), Bool())
+    parsed_msg = json_to_msg(msg_to_json(msg), Byte())
 
     assert parsed_msg.data == msg.data
 
 
-def test_bool_msg_from_json():
-    msg_json = '{ "data": true }'
+def test_byte_msg_from_json():
+    msg_json = '{ "data": "\u0010" }'
 
-    parsed_msg = json_to_msg(msg_json, Bool())
+    parsed_msg = json_to_msg(msg_json, Byte())
 
-    assert parsed_msg.data is True
+    assert parsed_msg.data == b'\x10'

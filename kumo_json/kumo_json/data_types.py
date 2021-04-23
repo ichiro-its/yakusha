@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Ichiro ITS
+# Copyright (c) 2021 ICHIRO ITS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -80,6 +80,10 @@ def is_float(data_type: str) -> bool:
     return data_type in ['float', 'double']
 
 
+def is_bytes(data_type: str) -> bool:
+    return data_type == 'octet'
+
+
 def is_array(data_type: str) -> bool:
     return data_type.startswith('sequence')
 
@@ -91,5 +95,7 @@ def filter_type(data_type: str, value: any) -> any:
         value = filter_unsigned_integer(data_type, value)
     elif is_float(data_type):
         value = float(value)
+    elif is_bytes(data_type):
+        value = str.encode(value)
 
     return value

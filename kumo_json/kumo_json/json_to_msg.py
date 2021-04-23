@@ -1,4 +1,4 @@
-# Copyright (c) 2021 ICHIRO ITS
+# Copyright (c) 2021 Ichiro ITS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,14 @@ def dict_to_msg(msg_dict: dict, msg: MsgType) -> MsgType:
         value = msg_dict.get(field)
 
         if dtypes.is_array(data_type):
-            sequence_data_type = data_type[data_type.find('<')+1:data_type.find('>')]
+            opening_tag_index = data_type.find('<') + 1
+
+            for index, char in enumerate(data_type):
+                if char in [',', '>']:
+                    closing_tag_index = index
+                    break
+
+            sequence_data_type = data_type[opening_tag_index:closing_tag_index]
             for index, item in enumerate(value):
                 value[index] = dtypes.filter_type(sequence_data_type, item)
         else:

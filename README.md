@@ -5,7 +5,7 @@
 [![license](https://img.shields.io/github/license/ichiro-its/kumo_json)](./LICENSE)
 [![test status](https://img.shields.io/github/workflow/status/ichiro-its/kumo_json/Build%20and%20Test?label=test)](https://github.com/ichiro-its/kumo_json/actions)
 
-This package provides a ROS 2 interface to JSON serialization library for [Kumo WebSocket to ROS 2 bridge](https://github.com/ichiro-its/kumo).
+This package provides a [ROS 2 interface](https://docs.ros.org/en/foxy/Concepts/About-ROS-Interfaces.html) to [JSON](https://www.json.org/) serialization library for [Kumo](https://github.com/ichiro-its/kumo) WebSocket to ROS 2 bridge.
 
 ## License
 

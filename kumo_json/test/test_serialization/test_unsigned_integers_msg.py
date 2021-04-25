@@ -20,7 +20,7 @@
 
 from kumo_json_interfaces.msg import UnsignedIntegers
 
-from kumo_json import data_types as dtypes, msg_to_json, json_to_msg
+from kumo_json import msg_to_json, json_to_msg
 
 
 def test_unsigned_integers_msg():
@@ -53,38 +53,6 @@ def test_unsigned_integers_msg_from_json():
     assert parsed_msg.uint16 == 20000
     assert parsed_msg.uint32 == 2000000000
     assert parsed_msg.uint64 == 2000000000000
-
-
-def test_unsigned_integers_msg_from_json_overflowed_min():
-    msg_json = '''{
-                    "uint8": -8,
-                    "uint16": -16,
-                    "uint32": -32,
-                    "uint64": -64
-                  }'''
-
-    parsed_msg = json_to_msg(msg_json, UnsignedIntegers())
-
-    assert parsed_msg.uint8 == 0
-    assert parsed_msg.uint16 == 0
-    assert parsed_msg.uint32 == 0
-    assert parsed_msg.uint64 == 0
-
-
-def test_unsigned_integers_msg_from_json_overflowed_max():
-    msg_json = '''{
-                    "uint8": 1000,
-                    "uint16": 100000,
-                    "uint32": 10000000000,
-                    "uint64": 100000000000000000000
-                  }'''
-
-    parsed_msg = json_to_msg(msg_json, UnsignedIntegers())
-
-    assert parsed_msg.uint8 == dtypes.MAX_UINT8
-    assert parsed_msg.uint16 == dtypes.MAX_UINT16
-    assert parsed_msg.uint32 == dtypes.MAX_UINT32
-    assert parsed_msg.uint64 == dtypes.MAX_UINT64
 
 
 def test_unsigned_integers_msg_from_json_float():

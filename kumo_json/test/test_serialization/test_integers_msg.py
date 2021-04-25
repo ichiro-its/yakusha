@@ -20,7 +20,7 @@
 
 from kumo_json_interfaces.msg import Integers
 
-from kumo_json import data_types as dtypes, msg_to_json, json_to_msg
+from kumo_json import msg_to_json, json_to_msg
 
 
 def test_integers_msg():
@@ -85,38 +85,6 @@ def test_integers_msg_from_json_negative():
     assert parsed_msg.int16 == -10000
     assert parsed_msg.int32 == -1000000000
     assert parsed_msg.int64 == -1000000000000
-
-
-def test_integers_msg_from_json_overflowed_min():
-    msg_json = '''{
-                    "int8": -200,
-                    "int16": -40000,
-                    "int32": -3000000000,
-                    "int64": -100000000000000000000
-                  }'''
-
-    parsed_msg = json_to_msg(msg_json, Integers())
-
-    assert parsed_msg.int8 == dtypes.MIN_INT8
-    assert parsed_msg.int16 == dtypes.MIN_INT16
-    assert parsed_msg.int32 == dtypes.MIN_INT32
-    assert parsed_msg.int64 == dtypes.MIN_INT64
-
-
-def test_integers_msg_from_json_overflowed_max():
-    msg_json = '''{
-                    "int8": 200,
-                    "int16": 40000,
-                    "int32": 3000000000,
-                    "int64": 100000000000000000000
-                  }'''
-
-    parsed_msg = json_to_msg(msg_json, Integers())
-
-    assert parsed_msg.int8 == dtypes.MAX_INT8
-    assert parsed_msg.int16 == dtypes.MAX_INT16
-    assert parsed_msg.int32 == dtypes.MAX_INT32
-    assert parsed_msg.int64 == dtypes.MAX_INT64
 
 
 def test_integers_msg_from_json_float():

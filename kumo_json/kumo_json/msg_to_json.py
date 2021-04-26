@@ -40,10 +40,14 @@ def msg_to_dict(msg: MsgType) -> dict:
             value = int(value)
         elif dtypes.is_float(data_type):
             value = float(value)
-        elif dtypes.is_bytes(data_type):
+        elif dtypes.is_byte(data_type):
             value = value.decode("utf-8")
         elif dtypes.is_array(data_type):
-            value = list(value)
+            if dtypes.is_byte(dtypes.get_sequence_item_type(data_type)):
+                value = [element.decode("utf-8") for element in value]
+            else:
+                value = list(value)
+        print(value)
 
         msg_dict[field] = value
 

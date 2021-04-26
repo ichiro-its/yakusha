@@ -32,6 +32,7 @@ def test_array_msg():
     msg.float32_array = [-3.1415, 3.1415]
     msg.bool_array = [True, False, True]
     msg.string_array = ["hello", "world", "!"]
+    msg.byte_array = [b'\x01', b'\x10', b'\x11']
 
     parsed_msg = json_to_msg(msg_to_json(msg), Arrays())
 
@@ -40,6 +41,7 @@ def test_array_msg():
     assert parsed_msg.float32_array == msg.float32_array
     assert parsed_msg.bool_array == msg.bool_array
     assert parsed_msg.string_array == msg.string_array
+    assert parsed_msg.byte_array == msg.byte_array
 
 
 def test_array_msg_from_json():
@@ -48,7 +50,8 @@ def test_array_msg_from_json():
                     "uint8_array": [1, 2, 3],
                     "float32_array": [-3.1415, 3.1415],
                     "bool_array": [true, false, true],
-                    "string_array": ["hello", "world", "!"]
+                    "string_array": ["hello", "world", "!"],
+                    "byte_array": ["\u0001", "\u0010", "\u0011"]
                   }'''
 
     parsed_msg = json_to_msg(msg_json, Arrays())
@@ -58,3 +61,4 @@ def test_array_msg_from_json():
     assert parsed_msg.float32_array == array('f', [-3.1415, 3.1415])
     assert parsed_msg.bool_array == [True, False, True]
     assert parsed_msg.string_array == ["hello", "world", "!"]
+    assert parsed_msg.byte_array == [b'\x01', b'\x10', b'\x11']

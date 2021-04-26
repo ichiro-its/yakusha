@@ -46,7 +46,6 @@ def filter_type(data_type: str, value: any) -> any:
         value = float(value)
     elif is_byte(data_type):
         value = value.encode('ISO-8859-1')
-        print(value)
 
     return value
 

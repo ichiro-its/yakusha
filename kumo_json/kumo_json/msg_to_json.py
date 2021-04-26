@@ -41,13 +41,12 @@ def msg_to_dict(msg: MsgType) -> dict:
         elif dtypes.is_float(data_type):
             value = float(value)
         elif dtypes.is_byte(data_type):
-            value = value.decode("utf-8")
+            value = value.decode('ISO-8859-1')
         elif dtypes.is_array(data_type):
             if dtypes.is_byte(dtypes.get_sequence_item_type(data_type)):
-                value = [element.decode("utf-8") for element in value]
+                value = [element.decode('ISO-8859-1') for element in value]
             else:
                 value = list(value)
-        print(value)
 
         msg_dict[field] = value
 

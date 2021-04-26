@@ -34,16 +34,9 @@ def dict_to_msg(msg_dict: dict, msg: MsgType) -> MsgType:
         value = msg_dict.get(field)
 
         if dtypes.is_array(data_type):
-            opening_tag_index = data_type.find('<') + 1
-
-            for index, char in enumerate(data_type):
-                if char in [',', '>']:
-                    closing_tag_index = index
-                    break
-
-            sequence_data_type = data_type[opening_tag_index:closing_tag_index]
+            sequence_item_type = dtypes.get_sequence_item_type(data_type)
             for index, item in enumerate(value):
-                value[index] = dtypes.filter_type(sequence_data_type, item)
+                value[index] = dtypes.filter_type(sequence_item_type, item)
         else:
             value = dtypes.filter_type(data_type, value)
 

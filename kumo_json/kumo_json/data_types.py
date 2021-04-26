@@ -31,7 +31,7 @@ def is_float(data_type: str) -> bool:
     return data_type in ['float', 'double']
 
 
-def is_bytes(data_type: str) -> bool:
+def is_byte(data_type: str) -> bool:
     return data_type == 'octet'
 
 
@@ -44,7 +44,18 @@ def filter_type(data_type: str, value: any) -> any:
         value = int(value)
     elif is_float(data_type):
         value = float(value)
-    elif is_bytes(data_type):
-        value = str.encode(value)
+    elif is_byte(data_type):
+        value = value.encode('ISO-8859-1')
 
     return value
+
+
+def get_sequence_item_type(data_type: str) -> str:
+    opening_tag_index = data_type.find('<') + 1
+
+    for index, char in enumerate(data_type):
+        if char in [',', '>']:
+            closing_tag_index = index
+            break
+
+    return data_type[opening_tag_index:closing_tag_index]

@@ -24,10 +24,8 @@ from rclpy.node import MsgType
 import kumo_json.data_types as dtypes
 
 
-def fiter_value(value: any, data_type: str) -> any:
-    if dtypes.is_integer(data_type):
-        return int(value)
-    elif dtypes.is_unsigned_integer(data_type):
+def fiter_type(value: any, data_type: str) -> any:
+    if dtypes.is_integer(data_type) or dtypes.is_unsigned_integer(data_type):
         return int(value)
     elif dtypes.is_float(data_type):
         return float(value)
@@ -50,10 +48,10 @@ def msg_to_dict(msg: MsgType) -> dict:
         value = getattr(msg, field)
 
         if dtypes.is_array(data_type):
-            value = [fiter_value(element, dtypes.get_sequence_item_type(data_type))
+            value = [fiter_type(element, dtypes.get_sequence_item_type(data_type))
                      for element in value]
         else:
-            value = fiter_value(value, data_type)
+            value = fiter_type(value, data_type)
 
         msg_dict[field] = value
 

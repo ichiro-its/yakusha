@@ -24,6 +24,19 @@ from rclpy.node import MsgType
 import kumo_json.data_types as dtypes
 
 
+def filter_type(data_type: str, value: any, attribute: any) -> any:
+    if dtypes.is_integer(data_type) or dtypes.is_unsigned_integer(data_type):
+        value = int(value)
+    elif dtypes.is_float(data_type):
+        value = float(value)
+    elif dtypes.is_byte(data_type):
+        value = value.encode('ISO-8859-1')
+    elif 'msg' in str(attribute):
+        value = dict_to_msg(value, attribute)
+
+    return value
+
+
 def dict_to_msg(msg_dict: dict, msg: MsgType) -> MsgType:
     fields = msg.get_fields_and_field_types()
 
@@ -36,9 +49,9 @@ def dict_to_msg(msg_dict: dict, msg: MsgType) -> MsgType:
         if dtypes.is_array(data_type):
             sequence_item_type = dtypes.get_sequence_item_type(data_type)
             for index, item in enumerate(value):
-                value[index] = dtypes.filter_type(sequence_item_type, item)
+                value[index] = filter_type(sequence_item_type, item, getattr(msg, field))
         else:
-            value = dtypes.filter_type(data_type, value)
+            value = filter_type(data_type, value, getattr(msg, field))
 
         setattr(msg, field, value)
 

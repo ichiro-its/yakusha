@@ -17,11 +17,13 @@ find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/Arrays.msg"
+  "msg/BoundedDynamicArrays.msg"
   "msg/Floats.msg"
   "msg/Integers.msg"
-  "msg/UnsignedIntegers.msg"
-  "msg/Arrays.msg"
-  "msg/BoundedDynamicArrays.msg")
+  "msg/NonFloats.msg"
+  "msg/Numbers.msg"
+  "msg/UnsignedIntegers.msg")
 
 ament_export_dependencies(rosidl_default_runtime)
 ament_package()

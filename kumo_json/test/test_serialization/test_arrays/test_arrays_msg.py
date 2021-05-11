@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from kumo_json_interfaces.msg import Arrays
+from kumo_json_interfaces.msg import Arrays, NonFloats
 
 from kumo_json import msg_to_json, json_to_msg
 
@@ -34,6 +34,18 @@ def test_array_msg():
     msg.string_array = ["hello", "world", "!"]
     msg.byte_array = [b'\x01', b'\x10', b'\x11']
 
+    non_floats_msg = NonFloats()
+    non_floats_msg.integers.int8 = 100
+    non_floats_msg.integers.int16 = -10000
+    non_floats_msg.integers.int32 = 1000000000
+    non_floats_msg.integers.int64 = -1000000000000
+    non_floats_msg.unsigned_integers.uint8 = 200
+    non_floats_msg.unsigned_integers.uint16 = 20000
+    non_floats_msg.unsigned_integers.uint32 = 2000000000
+    non_floats_msg.unsigned_integers.uint64 = 2000000000000
+
+    msg.non_floats_array = [non_floats_msg, non_floats_msg]
+
     parsed_msg = json_to_msg(msg_to_json(msg), Arrays())
 
     assert parsed_msg.int8_array == msg.int8_array
@@ -42,6 +54,7 @@ def test_array_msg():
     assert parsed_msg.bool_array == msg.bool_array
     assert parsed_msg.string_array == msg.string_array
     assert parsed_msg.byte_array == msg.byte_array
+    assert parsed_msg.non_floats_array == msg.non_floats_array
 
 
 def test_array_msg_from_json():
@@ -51,10 +64,50 @@ def test_array_msg_from_json():
                     "float32_array": [-3.1415, 3.1415],
                     "bool_array": [true, false, true],
                     "string_array": ["hello", "world", "!"],
-                    "byte_array": ["\u0001", "\u0010", "\u0011"]
+                    "byte_array": ["\u0001", "\u0010", "\u0011"],
+                    "non_floats_array": [
+                        {
+                            "integers": {
+                            "int8": 100,
+                            "int16": -10000,
+                            "int32": 1000000000,
+                            "int64": -1000000000000
+                            },
+                            "unsigned_integers": {
+                            "uint8": 200,
+                            "uint16": 20000,
+                            "uint32": 2000000000,
+                            "uint64": 2000000000000
+                            }
+                        },
+                        {
+                            "integers": {
+                            "int8": 100,
+                            "int16": -10000,
+                            "int32": 1000000000,
+                            "int64": -1000000000000
+                            },
+                            "unsigned_integers": {
+                            "uint8": 200,
+                            "uint16": 20000,
+                            "uint32": 2000000000,
+                            "uint64": 2000000000000
+                            }
+                        }
+                    ]
                   }'''
 
     parsed_msg = json_to_msg(msg_json, Arrays())
+
+    non_floats_msg = NonFloats()
+    non_floats_msg.integers.int8 = 100
+    non_floats_msg.integers.int16 = -10000
+    non_floats_msg.integers.int32 = 1000000000
+    non_floats_msg.integers.int64 = -1000000000000
+    non_floats_msg.unsigned_integers.uint8 = 200
+    non_floats_msg.unsigned_integers.uint16 = 20000
+    non_floats_msg.unsigned_integers.uint32 = 2000000000
+    non_floats_msg.unsigned_integers.uint64 = 2000000000000
 
     assert parsed_msg.int8_array == array('b', [1, 2, 3])
     assert parsed_msg.uint8_array == array('B', [1, 2, 3])
@@ -62,3 +115,4 @@ def test_array_msg_from_json():
     assert parsed_msg.bool_array == [True, False, True]
     assert parsed_msg.string_array == ["hello", "world", "!"]
     assert parsed_msg.byte_array == [b'\x01', b'\x10', b'\x11']
+    assert parsed_msg.non_floats_array == [non_floats_msg, non_floats_msg]

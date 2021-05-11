@@ -20,6 +20,10 @@
 
 import json
 from rclpy.node import MsgType
+from rosidl_parser.definition import NamespacedType
+from rosidl_runtime_py.convert import get_message_slot_types
+from rosidl_runtime_py.import_message import import_message_from_namespaced_type
+from rosidl_runtime_py.set_message import set_message_fields
 
 import kumo_json.data_types as dtypes
 
@@ -47,12 +51,21 @@ def dict_to_msg(msg_dict: dict, msg: MsgType) -> MsgType:
         value = msg_dict.get(field)
 
         if dtypes.is_array(data_type):
-            sequence_item_type = dtypes.get_sequence_item_type(data_type)
-            for index, item in enumerate(value):
-                value[index] = filter_type(sequence_item_type, item, getattr(msg, field))
+            rosidl_type = get_message_slot_types(msg)[field]
+            if isinstance(rosidl_type.value_type, NamespacedType):
+                field_elem_type = import_message_from_namespaced_type(rosidl_type.value_type)
+                for n in range(len(value)):
+                    submsg = field_elem_type()
+                    set_message_fields(submsg, value[n])
+                    value[n] = submsg
+            else:
+                sequence_item_type = dtypes.get_sequence_item_type(data_type)
+                for index, item in enumerate(value):
+                    value[index] = filter_type(sequence_item_type, item, getattr(msg, field))
         else:
             value = filter_type(data_type, value, getattr(msg, field))
 
+        # print(Dict[value)
         setattr(msg, field, value)
 
     return msg

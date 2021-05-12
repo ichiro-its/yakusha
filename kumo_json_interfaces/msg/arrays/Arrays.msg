@@ -5,3 +5,4 @@ bool[] bool_array
 string[] string_array
 byte[] byte_array
 NonFloats[] non_floats_array
+NonNumbers[] non_numbers_array

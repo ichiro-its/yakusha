@@ -23,6 +23,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/complex/Numbers.msg"
   "msg/primitives/Floats.msg"
   "msg/primitives/Integers.msg"
+  "msg/primitives/NonNumbers.msg"
   "msg/primitives/UnsignedIntegers.msg")
 
 ament_export_dependencies(rosidl_default_runtime)

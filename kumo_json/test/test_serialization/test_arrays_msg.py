@@ -20,7 +20,7 @@
 
 from kumo_json_interfaces.msg import Arrays
 
-from kumo_json import data_types as dtypes, msg_to_json, json_to_msg
+from kumo_json import msg_to_json, json_to_msg
 
 from array import array
 
@@ -32,6 +32,7 @@ def test_array_msg():
     msg.float32_array = [-3.1415, 3.1415]
     msg.bool_array = [True, False, True]
     msg.string_array = ["hello", "world", "!"]
+    msg.byte_array = [b'\x01', b'\x10', b'\x11']
 
     parsed_msg = json_to_msg(msg_to_json(msg), Arrays())
 
@@ -40,6 +41,7 @@ def test_array_msg():
     assert parsed_msg.float32_array == msg.float32_array
     assert parsed_msg.bool_array == msg.bool_array
     assert parsed_msg.string_array == msg.string_array
+    assert parsed_msg.byte_array == msg.byte_array
 
 
 def test_array_msg_from_json():
@@ -48,7 +50,8 @@ def test_array_msg_from_json():
                     "uint8_array": [1, 2, 3],
                     "float32_array": [-3.1415, 3.1415],
                     "bool_array": [true, false, true],
-                    "string_array": ["hello", "world", "!"]
+                    "string_array": ["hello", "world", "!"],
+                    "byte_array": ["\u0001", "\u0010", "\u0011"]
                   }'''
 
     parsed_msg = json_to_msg(msg_json, Arrays())
@@ -58,18 +61,4 @@ def test_array_msg_from_json():
     assert parsed_msg.float32_array == array('f', [-3.1415, 3.1415])
     assert parsed_msg.bool_array == [True, False, True]
     assert parsed_msg.string_array == ["hello", "world", "!"]
-
-
-def test_array_msg_from_json_overflowed_value():
-    msg_json = '''{
-                    "int8_array": [-200, 200],
-                    "uint8_array": [-8, 1000],
-                    "float32_array": [-3.1415, 3.1415],
-                    "bool_array": [true, false, true],
-                    "string_array": ["hello", "world", "!"]
-                  }'''
-
-    parsed_msg = json_to_msg(msg_json, Arrays())
-
-    assert parsed_msg.int8_array == array('b', [dtypes.MIN_INT8, dtypes.MAX_INT8])
-    assert parsed_msg.uint8_array == array('B', [0, dtypes.MAX_UINT8])
+    assert parsed_msg.byte_array == [b'\x01', b'\x10', b'\x11']

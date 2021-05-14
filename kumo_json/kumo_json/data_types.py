@@ -18,69 +18,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-MIN_INT8 = -(2 ** 7)
-MIN_INT16 = -(2 ** 15)
-MIN_INT32 = -(2 ** 31)
-MIN_INT64 = -(2 ** 63)
-
-MAX_INT8 = (2 ** 7) - 1
-MAX_INT16 = (2 ** 15) - 1
-MAX_INT32 = (2 ** 31) - 1
-MAX_INT64 = (2 ** 63) - 1
-
-MAX_UINT8 = (2 ** 8) - 1
-MAX_UINT16 = (2 ** 16) - 1
-MAX_UINT32 = (2 ** 32) - 1
-MAX_UINT64 = (2 ** 64) - 1
-
-
-def clamp(value: any, min_value: any, max_value: any) -> any:
-    return max(min(value, max_value), min_value)
-
 
 def is_integer(data_type: str) -> bool:
     return data_type in ['int8', 'int16', 'int32', 'int64']
-
-
-def filter_integer(data_type: str, value: any) -> int:
-    value = int(value)
-
-    if data_type == 'int8':
-        value = clamp(value, MIN_INT8, MAX_INT8)
-    elif data_type == 'int16':
-        value = clamp(value, MIN_INT16, MAX_INT16)
-    elif data_type == 'int32':
-        value = clamp(value, MIN_INT32, MAX_INT32)
-    elif data_type == 'int64':
-        value = clamp(value, MIN_INT64, MAX_INT64)
-
-    return value
 
 
 def is_unsigned_integer(data_type: str) -> bool:
     return data_type in ['uint8', 'uint16', 'uint32', 'uint64']
 
 
-def filter_unsigned_integer(data_type: str, value: any) -> int:
-    value = int(value)
-
-    if data_type == 'uint8':
-        value = clamp(value, 0, MAX_UINT8)
-    elif data_type == 'uint16':
-        value = clamp(value, 0, MAX_UINT16)
-    elif data_type == 'uint32':
-        value = clamp(value, 0, MAX_UINT32)
-    elif data_type == 'uint64':
-        value = clamp(value, 0, MAX_UINT64)
-
-    return value
-
-
 def is_float(data_type: str) -> bool:
     return data_type in ['float', 'double']
 
 
-def is_bytes(data_type: str) -> bool:
+def is_byte(data_type: str) -> bool:
     return data_type == 'octet'
 
 
@@ -89,13 +40,22 @@ def is_array(data_type: str) -> bool:
 
 
 def filter_type(data_type: str, value: any) -> any:
-    if is_integer(data_type):
-        value = filter_integer(data_type, value)
-    elif is_unsigned_integer(data_type):
-        value = filter_unsigned_integer(data_type, value)
+    if is_integer(data_type) or is_unsigned_integer(data_type):
+        value = int(value)
     elif is_float(data_type):
         value = float(value)
-    elif is_bytes(data_type):
-        value = str.encode(value)
+    elif is_byte(data_type):
+        value = value.encode('ISO-8859-1')
 
     return value
+
+
+def get_sequence_item_type(data_type: str) -> str:
+    opening_tag_index = data_type.find('<') + 1
+
+    for index, char in enumerate(data_type):
+        if char in [',', '>']:
+            closing_tag_index = index
+            break
+
+    return data_type[opening_tag_index:closing_tag_index]

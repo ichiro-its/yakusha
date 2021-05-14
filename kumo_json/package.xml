@@ -6,7 +6,8 @@
   <description>ROS 2 interface to JSON serialization for Kumo package</description>
   <maintainer email="alfi.maulana.f@gmail.com">Alfi Maulana</maintainer>
   <license>MIT License</license>
-  <exec_depend>rclpy</exec_depend>
+  <url>https://github.com/ichiro-its/kumo_json</url>
+  <depend>rclpy</depend>
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
   <test_depend>ament_pep257</test_depend>

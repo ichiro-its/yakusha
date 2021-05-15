@@ -20,8 +20,24 @@
 
 import json
 from rclpy.node import MsgType
+from rosidl_parser.definition import NamespacedType
+from rosidl_runtime_py.convert import get_message_slot_types
+from rosidl_runtime_py.import_message import import_message_from_namespaced_type
 
 import kumo_json.data_types as dtypes
+
+
+def filter_type(data_type: str, value: any, attribute: any) -> any:
+    if dtypes.is_integer(data_type) or dtypes.is_unsigned_integer(data_type):
+        value = int(value)
+    elif dtypes.is_float(data_type):
+        value = float(value)
+    elif dtypes.is_byte(data_type):
+        value = value.encode('ISO-8859-1')
+    elif 'msg' in str(attribute):
+        value = dict_to_msg(value, attribute)
+
+    return value
 
 
 def dict_to_msg(msg_dict: dict, msg: MsgType) -> MsgType:
@@ -34,11 +50,18 @@ def dict_to_msg(msg_dict: dict, msg: MsgType) -> MsgType:
         value = msg_dict.get(field)
 
         if dtypes.is_array(data_type):
-            sequence_item_type = dtypes.get_sequence_item_type(data_type)
-            for index, item in enumerate(value):
-                value[index] = dtypes.filter_type(sequence_item_type, item)
+            rosidl_type = get_message_slot_types(msg)[field]
+            if isinstance(rosidl_type.value_type, NamespacedType):
+                field_elem_type = import_message_from_namespaced_type(rosidl_type.value_type)
+                for n in range(len(value)):
+                    submsg = field_elem_type()
+                    value[n] = filter_type(None, value[n], submsg)
+            else:
+                sequence_item_type = dtypes.get_sequence_item_type(data_type)
+                for index, item in enumerate(value):
+                    value[index] = filter_type(sequence_item_type, item, getattr(msg, field))
         else:
-            value = dtypes.filter_type(data_type, value)
+            value = filter_type(data_type, value, getattr(msg, field))
 
         setattr(msg, field, value)
 

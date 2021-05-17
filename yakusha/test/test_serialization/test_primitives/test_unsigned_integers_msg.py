@@ -18,9 +18,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from kumo_json_interfaces.msg import UnsignedIntegers
+from yakusha_interfaces.msg import UnsignedIntegers
 
-from kumo_json import msg_to_json, json_to_msg
+from yakusha import msg_to_json, json_to_msg
 
 
 def test_unsigned_integers_msg():

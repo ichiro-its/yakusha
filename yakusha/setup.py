@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'kumo_json'
+package_name = 'yakusha'
 
 setup(
     name=package_name,

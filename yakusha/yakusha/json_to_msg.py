@@ -24,7 +24,7 @@ from rosidl_parser.definition import NamespacedType
 from rosidl_runtime_py.convert import get_message_slot_types
 from rosidl_runtime_py.import_message import import_message_from_namespaced_type
 
-import kumo_json.data_types as dtypes
+import yakusha.data_types as dtypes
 
 
 def filter_type(data_type: str, value: any, attribute: any) -> any:

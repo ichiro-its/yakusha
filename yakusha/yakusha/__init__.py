@@ -18,23 +18,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from std_msgs.msg import Byte
+# flake8: noqa
+import yakusha.data_types
 
-from kumo_json import msg_to_json, json_to_msg
+# flake8: noqa
+from yakusha.json_to_msg import dict_to_msg, json_to_msg
 
-
-def test_byte_msg():
-    msg = Byte()
-    msg.data = b'\x10'
-
-    parsed_msg = json_to_msg(msg_to_json(msg), Byte())
-
-    assert parsed_msg.data == msg.data
-
-
-def test_byte_msg_from_json():
-    msg_json = '{ "data": "\u0010" }'
-
-    parsed_msg = json_to_msg(msg_json, Byte())
-
-    assert parsed_msg.data == b'\x10'
+# flake8: noqa
+from yakusha.msg_to_json import msg_to_dict, msg_to_json

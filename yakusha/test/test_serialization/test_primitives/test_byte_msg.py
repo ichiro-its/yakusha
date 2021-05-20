@@ -18,23 +18,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from std_msgs.msg import Char
+from std_msgs.msg import Byte
 
-from kumo_json import msg_to_json, json_to_msg
+from yakusha import msg_to_json, json_to_msg
 
 
-def test_char_msg():
-    msg = Char()
-    msg.data = 105
+def test_byte_msg():
+    msg = Byte()
+    msg.data = b'\x10'
 
-    parsed_msg = json_to_msg(msg_to_json(msg), Char())
+    parsed_msg = json_to_msg(msg_to_json(msg), Byte())
 
     assert parsed_msg.data == msg.data
 
 
-def test_char_msg_from_json():
-    msg_json = '{ "data": "105" }'
+def test_byte_msg_from_json():
+    msg_json = '{ "data": "\u0010" }'
 
-    parsed_msg = json_to_msg(msg_json, Char())
+    parsed_msg = json_to_msg(msg_json, Byte())
 
-    assert parsed_msg.data == 105
+    assert parsed_msg.data == b'\x10'

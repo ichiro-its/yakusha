@@ -18,23 +18,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from std_msgs.msg import String
+from std_msgs.msg import Bool
 
-from kumo_json import msg_to_json, json_to_msg
+from yakusha import msg_to_json, json_to_msg
 
 
-def test_string_msg():
-    msg = String()
-    msg.data = 'Hello World!'
+def test_bool_msg():
+    msg = Bool()
+    msg.data = True
 
-    parsed_msg = json_to_msg(msg_to_json(msg), String())
+    parsed_msg = json_to_msg(msg_to_json(msg), Bool())
 
     assert parsed_msg.data == msg.data
 
 
-def test_string_msg_from_json():
-    msg_json = '{ "data": "Hello World!" }'
+def test_bool_msg_from_json():
+    msg_json = '{ "data": true }'
 
-    parsed_msg = json_to_msg(msg_json, String())
+    parsed_msg = json_to_msg(msg_json, Bool())
 
-    assert parsed_msg.data == 'Hello World!'
+    assert parsed_msg.data is True

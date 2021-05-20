@@ -18,47 +18,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import json
-from rclpy.node import MsgType
+from std_msgs.msg import Char
 
-import kumo_json.data_types as dtypes
-
-
-def fiter_type(value: any, data_type: str) -> any:
-    if dtypes.is_integer(data_type) or dtypes.is_unsigned_integer(data_type):
-        return int(value)
-    elif dtypes.is_float(data_type):
-        return float(value)
-    elif dtypes.is_byte(data_type):
-        return value.decode('ISO-8859-1')
-    elif 'msg' in str(type(value)):
-        return msg_to_dict(value)
-
-    return value
+from yakusha import msg_to_json, json_to_msg
 
 
-def msg_to_dict(msg: MsgType) -> dict:
-    fields = msg.get_fields_and_field_types()
+def test_char_msg():
+    msg = Char()
+    msg.data = 105
 
-    msg_dict = {}
-    for field, data_type in fields.items():
-        if not hasattr(msg, field):
-            continue
+    parsed_msg = json_to_msg(msg_to_json(msg), Char())
 
-        value = getattr(msg, field)
-
-        if dtypes.is_array(data_type):
-            value = [fiter_type(element, dtypes.get_sequence_item_type(data_type))
-                     for element in value]
-        else:
-            value = fiter_type(value, data_type)
-
-        msg_dict[field] = value
-
-    return msg_dict
+    assert parsed_msg.data == msg.data
 
 
-def msg_to_json(msg: MsgType) -> str:
-    msg_dict = msg_to_dict(msg)
+def test_char_msg_from_json():
+    msg_json = '{ "data": "105" }'
 
-    return json.dumps(msg_dict)
+    parsed_msg = json_to_msg(msg_json, Char())
+
+    assert parsed_msg.data == 105

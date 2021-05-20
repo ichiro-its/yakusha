@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(kumo_json_interfaces)
+project(yakusha_interfaces)
 
 if(NOT CMAKE_C_STANDARD)
   set(CMAKE_C_STANDARD 99)

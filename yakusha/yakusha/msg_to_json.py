@@ -18,23 +18,47 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from std_msgs.msg import Bool
+import json
+from rclpy.node import MsgType
 
-from kumo_json import msg_to_json, json_to_msg
-
-
-def test_bool_msg():
-    msg = Bool()
-    msg.data = True
-
-    parsed_msg = json_to_msg(msg_to_json(msg), Bool())
-
-    assert parsed_msg.data == msg.data
+import yakusha.data_types as dtypes
 
 
-def test_bool_msg_from_json():
-    msg_json = '{ "data": true }'
+def fiter_type(value: any, data_type: str) -> any:
+    if dtypes.is_integer(data_type) or dtypes.is_unsigned_integer(data_type):
+        return int(value)
+    elif dtypes.is_float(data_type):
+        return float(value)
+    elif dtypes.is_byte(data_type):
+        return value.decode('ISO-8859-1')
+    elif 'msg' in str(type(value)):
+        return msg_to_dict(value)
 
-    parsed_msg = json_to_msg(msg_json, Bool())
+    return value
 
-    assert parsed_msg.data is True
+
+def msg_to_dict(msg: MsgType) -> dict:
+    fields = msg.get_fields_and_field_types()
+
+    msg_dict = {}
+    for field, data_type in fields.items():
+        if not hasattr(msg, field):
+            continue
+
+        value = getattr(msg, field)
+
+        if dtypes.is_array(data_type):
+            value = [fiter_type(element, dtypes.get_sequence_item_type(data_type))
+                     for element in value]
+        else:
+            value = fiter_type(value, data_type)
+
+        msg_dict[field] = value
+
+    return msg_dict
+
+
+def msg_to_json(msg: MsgType) -> str:
+    msg_dict = msg_to_dict(msg)
+
+    return json.dumps(msg_dict)

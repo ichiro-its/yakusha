@@ -18,11 +18,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-# flake8: noqa
-import kumo_json.data_types
+from std_msgs.msg import String
 
-# flake8: noqa
-from kumo_json.json_to_msg import dict_to_msg, json_to_msg
+from yakusha import msg_to_json, json_to_msg
 
-# flake8: noqa
-from kumo_json.msg_to_json import msg_to_dict, msg_to_json
+
+def test_string_msg():
+    msg = String()
+    msg.data = 'Hello World!'
+
+    parsed_msg = json_to_msg(msg_to_json(msg), String())
+
+    assert parsed_msg.data == msg.data
+
+
+def test_string_msg_from_json():
+    msg_json = '{ "data": "Hello World!" }'
+
+    parsed_msg = json_to_msg(msg_json, String())
+
+    assert parsed_msg.data == 'Hello World!'

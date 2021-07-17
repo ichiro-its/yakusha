@@ -18,9 +18,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from yakusha_interfaces.msg import BoundedDynamicArrays
-
 from yakusha import msg_to_json, json_to_msg
+from yakusha.msg import BoundedDynamicArrays
 
 from array import array
 

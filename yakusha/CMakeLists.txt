@@ -17,6 +17,20 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
 
+if(BUILD_TESTING)
+  find_package(rosidl_default_generators REQUIRED)
+
+  rosidl_generate_interfaces(${PROJECT_NAME}_interfaces
+    "msg/arrays/Arrays.msg"
+    "msg/arrays/BoundedDynamicArrays.msg"
+    "msg/complex/NonFloats.msg"
+    "msg/complex/Numbers.msg"
+    "msg/primitives/Floats.msg"
+    "msg/primitives/Integers.msg"
+    "msg/primitives/NonNumbers.msg"
+    "msg/primitives/UnsignedIntegers.msg")
+endif()
+
 ament_python_install_package(${PROJECT_NAME})
 
 if(BUILD_TESTING)

@@ -18,9 +18,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from yakusha_interfaces.msg import UnsignedIntegers
-
 from yakusha import msg_to_json, json_to_msg
+from yakusha.msg import UnsignedIntegers
 
 
 def test_unsigned_integers_msg():
